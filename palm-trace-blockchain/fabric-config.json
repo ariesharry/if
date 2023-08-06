@@ -1,0 +1,245 @@
+{
+	"orgs": {
+		"Petani": {
+			"email": "petani.admin@palmtrace.co.id",
+			"password": "Petani@PalmTrace2023",
+			"msp": "PetaniMSP",
+			"connectionProfile": {
+				"name": "fablo-test-network-petani",
+				"version": "1.0.0",
+				"client": {
+					"organization": "Petani",
+					"connection": {
+						"timeout": {
+							"peer": {
+								"endorser": "500"
+							}
+						}
+					}
+				},
+				"organization": {
+					"Petani": {
+						"mspid": "PetaniMSP",
+						"peers": [
+							"peer0.petani.palmtrace.co.id"
+						],
+						"certificateAuthorities": [
+							"ca.petani.palmtrace.co.id"
+						]
+					}
+				},
+				"peers": {
+					"peer0.petani.palmtrace.co.id": {
+						"url": "grpc://localhost:7041",
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICcDCCAhegAwIBAgIQcO27Wl9yfZSJF3FEPxn1WzAKBggqhkjOPQQDAjCBgjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHzAdBgNVBAoTFnBldGFuaS5wYWxtdHJhY2UuY28uaWQxJTAjBgNV\nBAMTHHRsc2NhLnBldGFuaS5wYWxtdHJhY2UuY28uaWQwHhcNMjMwODA1MDQwMzAw\nWhcNMzMwODAyMDQwMzAwWjCBgjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlm\nb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHzAdBgNVBAoTFnBldGFuaS5w\nYWxtdHJhY2UuY28uaWQxJTAjBgNVBAMTHHRsc2NhLnBldGFuaS5wYWxtdHJhY2Uu\nY28uaWQwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARpKyjCiNiLX12oIKINUWC4\nFIncnWhIobHGMO9LqE5c6YZs95YMmYQSu9KBRsPhhDpj6ySXImGT5A4rB8bDYmxN\no20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUF\nBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIHzCkZSBNMF/X7S4yEC9b3hk\nIf8L0bZQyQ1TSbu2ef0zMAoGCCqGSM49BAMCA0cAMEQCIHfh+6zcTVrTE4ntiYWp\ns9LRZwi+3BQeqsQwUs5wDaBkAiAm2MW2AYIRZo4KFnadRXUKEltzWd2I30U6gSEL\n3tM90Q==\n-----END CERTIFICATE-----\n"
+						},
+						"grpcOptions": {
+							"ssl-target-name-override": "peer0.petani.palmtrace.co.id",
+							"hostnameOverride": "peer0.petani.palmtrace.co.id"
+						}
+					}
+				},
+				"certificateAuthorities": {
+					"ca.petani.palmtrace.co.id": {
+						"url": "http://localhost:7040",
+						"caName": "ca.petani.palmtrace.co.id",
+						"httpOptions": {
+							"verify": false
+						},
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICcDCCAhegAwIBAgIQcO27Wl9yfZSJF3FEPxn1WzAKBggqhkjOPQQDAjCBgjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xHzAdBgNVBAoTFnBldGFuaS5wYWxtdHJhY2UuY28uaWQxJTAjBgNV\nBAMTHHRsc2NhLnBldGFuaS5wYWxtdHJhY2UuY28uaWQwHhcNMjMwODA1MDQwMzAw\nWhcNMzMwODAyMDQwMzAwWjCBgjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlm\nb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHzAdBgNVBAoTFnBldGFuaS5w\nYWxtdHJhY2UuY28uaWQxJTAjBgNVBAMTHHRsc2NhLnBldGFuaS5wYWxtdHJhY2Uu\nY28uaWQwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARpKyjCiNiLX12oIKINUWC4\nFIncnWhIobHGMO9LqE5c6YZs95YMmYQSu9KBRsPhhDpj6ySXImGT5A4rB8bDYmxN\no20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUF\nBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIHzCkZSBNMF/X7S4yEC9b3hk\nIf8L0bZQyQ1TSbu2ef0zMAoGCCqGSM49BAMCA0cAMEQCIHfh+6zcTVrTE4ntiYWp\ns9LRZwi+3BQeqsQwUs5wDaBkAiAm2MW2AYIRZo4KFnadRXUKEltzWd2I30U6gSEL\n3tM90Q==\n-----END CERTIFICATE-----\n"
+						}
+					}
+				}
+			}
+		},
+		"Koperasi": {
+			"email": "koperasi.admin@palmtrace.co.id",
+			"password": "Koperasi@PalmTrace2023",
+			"msp": "KoperasiMSP",
+			"connectionProfile": {
+				"name": "fablo-test-network-koperasi",
+				"version": "1.0.0",
+				"client": {
+					"organization": "Koperasi",
+					"connection": {
+						"timeout": {
+							"peer": {
+								"endorser": "500"
+							}
+						}
+					}
+				},
+				"organization": {
+					"Koperasi": {
+						"mspid": "KoperasiMSP",
+						"peers": [
+							"peer0.koperasi.palmtrace.co.id"
+						],
+						"certificateAuthorities": [
+							"ca.koperasi.palmtrace.co.id"
+						]
+					}
+				},
+				"peers": {
+					"peer0.koperasi.palmtrace.co.id": {
+						"url": "grpc://localhost:7061",
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICeTCCAh+gAwIBAgIQI5rTHwp1b09QpjfbK/P+FTAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGGtvcGVyYXNpLnBhbG10cmFjZS5jby5pZDEnMCUG\nA1UEAxMedGxzY2Eua29wZXJhc2kucGFsbXRyYWNlLmNvLmlkMB4XDTIzMDgwNTA0\nMDMwMFoXDTMzMDgwMjA0MDMwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExhrb3Bl\ncmFzaS5wYWxtdHJhY2UuY28uaWQxJzAlBgNVBAMTHnRsc2NhLmtvcGVyYXNpLnBh\nbG10cmFjZS5jby5pZDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABK4OTv22WRIy\nAD+N9tMQXoesoz2bugcfWbSZJh8MAJ8NdjGzu4x74Ovux+CbRX6gov5XmByNEkKM\nG+ifI6ksbOijbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgoDKB1dAUOMMx\nBrJ6IwV0NW09uyFWB2VLCuCENqABCMcwCgYIKoZIzj0EAwIDSAAwRQIhAP0qnjaO\nW3Iz9KT91HpCVQ6H5gCei80PI/RAkQ42iMyFAiBEhhJVwplZr4kxWutcNPtrk3ZL\nLEPQFxVtGG2Qpk9baQ==\n-----END CERTIFICATE-----\n"
+						},
+						"grpcOptions": {
+							"ssl-target-name-override": "peer0.koperasi.palmtrace.co.id",
+							"hostnameOverride": "peer0.koperasi.palmtrace.co.id"
+						}
+					}
+				},
+				"certificateAuthorities": {
+					"ca.koperasi.palmtrace.co.id": {
+						"url": "http://localhost:7060",
+						"caName": "ca.koperasi.palmtrace.co.id",
+						"httpOptions": {
+							"verify": false
+						},
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICeTCCAh+gAwIBAgIQI5rTHwp1b09QpjfbK/P+FTAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGGtvcGVyYXNpLnBhbG10cmFjZS5jby5pZDEnMCUG\nA1UEAxMedGxzY2Eua29wZXJhc2kucGFsbXRyYWNlLmNvLmlkMB4XDTIzMDgwNTA0\nMDMwMFoXDTMzMDgwMjA0MDMwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExhrb3Bl\ncmFzaS5wYWxtdHJhY2UuY28uaWQxJzAlBgNVBAMTHnRsc2NhLmtvcGVyYXNpLnBh\nbG10cmFjZS5jby5pZDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABK4OTv22WRIy\nAD+N9tMQXoesoz2bugcfWbSZJh8MAJ8NdjGzu4x74Ovux+CbRX6gov5XmByNEkKM\nG+ifI6ksbOijbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgoDKB1dAUOMMx\nBrJ6IwV0NW09uyFWB2VLCuCENqABCMcwCgYIKoZIzj0EAwIDSAAwRQIhAP0qnjaO\nW3Iz9KT91HpCVQ6H5gCei80PI/RAkQ42iMyFAiBEhhJVwplZr4kxWutcNPtrk3ZL\nLEPQFxVtGG2Qpk9baQ==\n-----END CERTIFICATE-----\n"
+						}
+					}
+				}
+			}
+		},
+		"Unilever": {
+			"email": "unilever.admin@palmtrace.co.id",
+			"password": "Unilever@PalmTrace2023",
+			"msp": "UnileverMSP",
+			"connectionProfile": {
+				"name": "fablo-test-network-unilever",
+				"version": "1.0.0",
+				"client": {
+					"organization": "Unilever",
+					"connection": {
+						"timeout": {
+							"peer": {
+								"endorser": "500"
+							}
+						}
+					}
+				},
+				"organization": {
+					"Unilever": {
+						"mspid": "UnileverMSP",
+						"peers": [
+							"peer0.unilever.palmtrace.co.id"
+						],
+						"certificateAuthorities": [
+							"ca.unilever.palmtrace.co.id"
+						]
+					}
+				},
+				"peers": {
+					"peer0.unilever.palmtrace.co.id": {
+						"url": "grpc://localhost:7101",
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICejCCAh+gAwIBAgIQaJ6TDjn6XGe+1pp8fg3qVzAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGHVuaWxldmVyLnBhbG10cmFjZS5jby5pZDEnMCUG\nA1UEAxMedGxzY2EudW5pbGV2ZXIucGFsbXRyYWNlLmNvLmlkMB4XDTIzMDgwNTA0\nMDMwMFoXDTMzMDgwMjA0MDMwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExh1bmls\nZXZlci5wYWxtdHJhY2UuY28uaWQxJzAlBgNVBAMTHnRsc2NhLnVuaWxldmVyLnBh\nbG10cmFjZS5jby5pZDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJwg56VzHBUW\nHQmF+ZZAUArPKzcm7103eYcfs+12rQexAGqBP5fIMnLizVXNzUhaqNSqxO3NjTY1\nzvEc99KlyyGjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgKGrOXUpzuqZq\nbTBX4Frfnv+UIHpxB0jr5EWrSCm2bhswCgYIKoZIzj0EAwIDSQAwRgIhAJM0sf4V\nqwnQ4qmm0biHCCqXQ7hL9WAMYFpAe1sqcUFAAiEAtDugWVHG/04OlSVfXcnwUulG\nheIeuDrpc6x5QwDBk1s=\n-----END CERTIFICATE-----\n"
+						},
+						"grpcOptions": {
+							"ssl-target-name-override": "peer0.unilever.palmtrace.co.id",
+							"hostnameOverride": "peer0.unilever.palmtrace.co.id"
+						}
+					}
+				},
+				"certificateAuthorities": {
+					"ca.unilever.palmtrace.co.id": {
+						"url": "http://localhost:7100",
+						"caName": "ca.unilever.palmtrace.co.id",
+						"httpOptions": {
+							"verify": false
+						},
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICejCCAh+gAwIBAgIQaJ6TDjn6XGe+1pp8fg3qVzAKBggqhkjOPQQDAjCBhjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoTGHVuaWxldmVyLnBhbG10cmFjZS5jby5pZDEnMCUG\nA1UEAxMedGxzY2EudW5pbGV2ZXIucGFsbXRyYWNlLmNvLmlkMB4XDTIzMDgwNTA0\nMDMwMFoXDTMzMDgwMjA0MDMwMFowgYYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpD\nYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKExh1bmls\nZXZlci5wYWxtdHJhY2UuY28uaWQxJzAlBgNVBAMTHnRsc2NhLnVuaWxldmVyLnBh\nbG10cmFjZS5jby5pZDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJwg56VzHBUW\nHQmF+ZZAUArPKzcm7103eYcfs+12rQexAGqBP5fIMnLizVXNzUhaqNSqxO3NjTY1\nzvEc99KlyyGjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgKGrOXUpzuqZq\nbTBX4Frfnv+UIHpxB0jr5EWrSCm2bhswCgYIKoZIzj0EAwIDSQAwRgIhAJM0sf4V\nqwnQ4qmm0biHCCqXQ7hL9WAMYFpAe1sqcUFAAiEAtDugWVHG/04OlSVfXcnwUulG\nheIeuDrpc6x5QwDBk1s=\n-----END CERTIFICATE-----\n"
+						}
+					}
+				}
+			}
+		},
+		"PabrikKelapaSawit": {
+			"email": "pks.admin@palmtrace.co.id",
+			"password": "Pks@PalmTrace2023",
+			"msp": "PabrikKelapaSawitMSP",
+			"connectionProfile": {
+				"name": "fablo-test-network-pabrikkelapasawit",
+				"version": "1.0.0",
+				"client": {
+					"organization": "PabrikKelapaSawit",
+					"connection": {
+						"timeout": {
+							"peer": {
+								"endorser": "500"
+							}
+						}
+					}
+				},
+				"organization": {
+					"PabrikKelapaSawit": {
+						"mspid": "PabrikKelapaSawitMSP",
+						"peers": [
+							"peer0.pabrikkelapasawit.palmtrace.co.id"
+						],
+						"certificateAuthorities": [
+							"ca.pabrikkelapasawit.palmtrace.co.id"
+						]
+					}
+				},
+				"peers": {
+					"peer0.pabrikkelapasawit.palmtrace.co.id": {
+						"url": "grpc://localhost:7081",
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICnTCCAkOgAwIBAgIQGptB5CAnydpX+rrMMQ260DAKBggqhkjOPQQDAjCBmDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xKjAoBgNVBAoTIXBhYnJpa2tlbGFwYXNhd2l0LnBhbG10cmFjZS5j\nby5pZDEwMC4GA1UEAxMndGxzY2EucGFicmlra2VsYXBhc2F3aXQucGFsbXRyYWNl\nLmNvLmlkMB4XDTIzMDgwNTA0MDMwMFoXDTMzMDgwMjA0MDMwMFowgZgxCzAJBgNV\nBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNp\nc2NvMSowKAYDVQQKEyFwYWJyaWtrZWxhcGFzYXdpdC5wYWxtdHJhY2UuY28uaWQx\nMDAuBgNVBAMTJ3Rsc2NhLnBhYnJpa2tlbGFwYXNhd2l0LnBhbG10cmFjZS5jby5p\nZDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABGBuH/TEmmYqQo42u3HhZLL/Z6Uv\nxXolTKYWefGztdIBBoCEPkc9Km9njmksZg/eT7jVPV3NvhBxm4u8VfN4J66jbTBr\nMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEw\nDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgM+ukWeVA2QTglyaGs8bqG0WkUJrx\nuFxCCHaSbn4vJd8wCgYIKoZIzj0EAwIDSAAwRQIhANACZ8yVt6aYZqm2W44s6JEh\nn0DjjbuP+7wwP68A6/CgAiBRaw2Byf7yCuUMAsLsRbiZNcNYmvj1GhWz+jRN+Nuv\nAQ==\n-----END CERTIFICATE-----\n"
+						},
+						"grpcOptions": {
+							"ssl-target-name-override": "peer0.pabrikkelapasawit.palmtrace.co.id",
+							"hostnameOverride": "peer0.pabrikkelapasawit.palmtrace.co.id"
+						}
+					}
+				},
+				"certificateAuthorities": {
+					"ca.pabrikkelapasawit.palmtrace.co.id": {
+						"url": "http://localhost:7080",
+						"caName": "ca.pabrikkelapasawit.palmtrace.co.id",
+						"httpOptions": {
+							"verify": false
+						},
+						"tlsCACerts": {
+							"pem": "-----BEGIN CERTIFICATE-----\nMIICnTCCAkOgAwIBAgIQGptB5CAnydpX+rrMMQ260DAKBggqhkjOPQQDAjCBmDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xKjAoBgNVBAoTIXBhYnJpa2tlbGFwYXNhd2l0LnBhbG10cmFjZS5j\nby5pZDEwMC4GA1UEAxMndGxzY2EucGFicmlra2VsYXBhc2F3aXQucGFsbXRyYWNl\nLmNvLmlkMB4XDTIzMDgwNTA0MDMwMFoXDTMzMDgwMjA0MDMwMFowgZgxCzAJBgNV\nBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNp\nc2NvMSowKAYDVQQKEyFwYWJyaWtrZWxhcGFzYXdpdC5wYWxtdHJhY2UuY28uaWQx\nMDAuBgNVBAMTJ3Rsc2NhLnBhYnJpa2tlbGFwYXNhd2l0LnBhbG10cmFjZS5jby5p\nZDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABGBuH/TEmmYqQo42u3HhZLL/Z6Uv\nxXolTKYWefGztdIBBoCEPkc9Km9njmksZg/eT7jVPV3NvhBxm4u8VfN4J66jbTBr\nMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEw\nDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgM+ukWeVA2QTglyaGs8bqG0WkUJrx\nuFxCCHaSbn4vJd8wCgYIKoZIzj0EAwIDSAAwRQIhANACZ8yVt6aYZqm2W44s6JEh\nn0DjjbuP+7wwP68A6/CgAiBRaw2Byf7yCuUMAsLsRbiZNcNYmvj1GhWz+jRN+Nuv\nAQ==\n-----END CERTIFICATE-----\n"
+						}
+					}
+				}
+			}
+		}
+	},
+	"channels": {
+		"rantai-pasok-channel": {
+			"PabrikKelapaSawit": [
+				"peer0"
+			],
+			"Koperasi": [
+				"peer0"
+			],
+			"Petani": [
+				"peer0"
+			],
+			"Unilever": [
+				"peer0"
+			]
+		}
+	},
+	"chaincodes": [
+		{
+			"name": "rantai-pasok-chaincode",
+			"version": "0.0.1",
+			"lang": "golang",
+			"channel": "rantai-pasok-channel",
+			"directory": "./chaincodes/rantai-pasok-chaincode"
+		}
+	]
+}

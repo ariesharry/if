@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "network-petani": {
+      "name": "Network of Petani",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-petani.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

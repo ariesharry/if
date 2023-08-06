@@ -1,0 +1,30 @@
+name: fablo-test-network-pabrikkelapasawit
+description: Connection profile for PabrikKelapaSawit in Fablo network
+version: 1.0.0
+client:
+  organization: PabrikKelapaSawit
+organizations:
+  PabrikKelapaSawit:
+    mspid: PabrikKelapaSawitMSP
+    peers:
+      - peer0.petani.palmtrace.co.id
+      - peer0.koperasi.palmtrace.co.id
+      - peer0.pabrikkelapasawit.palmtrace.co.id
+      - peer0.unilever.palmtrace.co.id
+    certificateAuthorities:
+      - ca.pabrikkelapasawit.palmtrace.co.id
+peers:
+  peer0.petani.palmtrace.co.id:
+    url: grpc://localhost:7041
+  peer0.koperasi.palmtrace.co.id:
+    url: grpc://localhost:7061
+  peer0.pabrikkelapasawit.palmtrace.co.id:
+    url: grpc://localhost:7081
+  peer0.unilever.palmtrace.co.id:
+    url: grpc://localhost:7101
+certificateAuthorities:
+  ca.pabrikkelapasawit.palmtrace.co.id:
+    url: http://localhost:7080
+    caName: ca.pabrikkelapasawit.palmtrace.co.id
+    httpOptions:
+      verify: false

@@ -1,0 +1,251 @@
+################################################################################
+#   SECTION: Capabilities
+################################################################################
+Capabilities:
+    Channel: &ChannelCapabilities
+        V2_0: true
+    Orderer: &OrdererCapabilities
+        V2_0: true
+    Application: &ApplicationCapabilities
+        V2_0: true
+
+################################################################################
+#   CHANNEL Defaults
+################################################################################
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+################################################################################
+#   Section: Organizations
+################################################################################
+Organizations:
+    - &PalmTraceOrderer
+      Name: PalmTraceOrdererMSP
+      ID: PalmTraceOrdererMSP
+      MSPDir: crypto-config/peerOrganizations/orderer.palmtrace.co.id/msp
+
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('PalmTraceOrdererMSP.member')"
+          Writers:
+              Type: Signature
+              Rule: "OR('PalmTraceOrdererMSP.member')"
+          Admins:
+              Type: Signature
+              Rule: "OR('PalmTraceOrdererMSP.admin')"
+          Endorsement:
+              Type: Signature
+              Rule: "OR('PalmTraceOrdererMSP.member')"
+
+      AnchorPeers:
+
+    - &Petani
+      Name: PetaniMSP
+      ID: PetaniMSP
+      MSPDir: crypto-config/peerOrganizations/petani.palmtrace.co.id/msp
+
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('PetaniMSP.member')"
+          Writers:
+              Type: Signature
+              Rule: "OR('PetaniMSP.member')"
+          Admins:
+              Type: Signature
+              Rule: "OR('PetaniMSP.admin')"
+          Endorsement:
+              Type: Signature
+              Rule: "OR('PetaniMSP.member')"
+
+      AnchorPeers:
+          - Host: peer0.petani.palmtrace.co.id
+            Port: 7041
+
+    - &Koperasi
+      Name: KoperasiMSP
+      ID: KoperasiMSP
+      MSPDir: crypto-config/peerOrganizations/koperasi.palmtrace.co.id/msp
+
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('KoperasiMSP.member')"
+          Writers:
+              Type: Signature
+              Rule: "OR('KoperasiMSP.member')"
+          Admins:
+              Type: Signature
+              Rule: "OR('KoperasiMSP.admin')"
+          Endorsement:
+              Type: Signature
+              Rule: "OR('KoperasiMSP.member')"
+
+      AnchorPeers:
+          - Host: peer0.koperasi.palmtrace.co.id
+            Port: 7061
+
+    - &PabrikKelapaSawit
+      Name: PabrikKelapaSawitMSP
+      ID: PabrikKelapaSawitMSP
+      MSPDir: crypto-config/peerOrganizations/pabrikkelapasawit.palmtrace.co.id/msp
+
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('PabrikKelapaSawitMSP.member')"
+          Writers:
+              Type: Signature
+              Rule: "OR('PabrikKelapaSawitMSP.member')"
+          Admins:
+              Type: Signature
+              Rule: "OR('PabrikKelapaSawitMSP.admin')"
+          Endorsement:
+              Type: Signature
+              Rule: "OR('PabrikKelapaSawitMSP.member')"
+
+      AnchorPeers:
+          - Host: peer0.pabrikkelapasawit.palmtrace.co.id
+            Port: 7081
+
+    - &Unilever
+      Name: UnileverMSP
+      ID: UnileverMSP
+      MSPDir: crypto-config/peerOrganizations/unilever.palmtrace.co.id/msp
+
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('UnileverMSP.member')"
+          Writers:
+              Type: Signature
+              Rule: "OR('UnileverMSP.member')"
+          Admins:
+              Type: Signature
+              Rule: "OR('UnileverMSP.admin')"
+          Endorsement:
+              Type: Signature
+              Rule: "OR('UnileverMSP.member')"
+
+      AnchorPeers:
+          - Host: peer0.unilever.palmtrace.co.id
+            Port: 7101
+
+################################################################################
+#   SECTION: Application
+################################################################################
+Application: &ApplicationDefaults
+    Organizations:
+    # Policies defines the set of policies at this level of the config tree
+    # For Application policies, their canonical path is
+    #   /Channel/Application/<PolicyName>
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Endorsement"
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+################################################################################
+#   SECTION: Orderer
+################################################################################
+Orderer: &Palmtrace-orderer-groupDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer0.palmtrace-orderer-group.orderer.palmtrace.co.id:7030
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 1
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Organizations:
+    # Policies defines the set of policies at this level of the config tree
+    # For Orderer policies, their canonical path is
+    #   /Channel/Orderer/<PolicyName>
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        # BlockValidation specifies what signatures must be included in the block
+        # from the orderer for the peer to validate it.
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+    Capabilities:
+        <<: *OrdererCapabilities
+
+################################################################################
+#   Profile
+################################################################################
+# https://github:com/hyperledger/fabric/blob/master/sampleconfig/configtx.yaml
+
+Profiles:
+    # Profile used to create Genesis block for group palmtrace-orderer-group #
+    Palmtrace-orderer-groupGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *Palmtrace-orderer-groupDefaults
+            Organizations:
+                - *PalmTraceOrderer
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *PalmTraceOrderer
+                    - *Petani
+                    - *Koperasi
+                    - *PabrikKelapaSawit
+                    - *Unilever
+
+    # Profile used to create channeltx for rantai-pasok-channel #
+    RantaiPasokChannel:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *Palmtrace-orderer-groupDefaults
+            Organizations:
+                - *PalmTraceOrderer
+            Capabilities:
+                <<: *ApplicationCapabilities
+        Consortium: SampleConsortium
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Petani
+                    - *Koperasi
+                    - *PabrikKelapaSawit
+                    - *Unilever
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Petani
+                - *Koperasi
+                - *PabrikKelapaSawit
+                - *Unilever

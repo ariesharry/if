@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "network-koperasi": {
+      "name": "Network of Koperasi",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-koperasi.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

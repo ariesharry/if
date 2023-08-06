@@ -1,0 +1,9 @@
+PeerOrgs:
+  - Name: PalmTraceOrderer
+    Domain: orderer.palmtrace.co.id
+    Specs:
+      - Hostname: orderer0.palmtrace-orderer-group
+    Template:
+      Count: 0
+    Users:
+      Count: 1

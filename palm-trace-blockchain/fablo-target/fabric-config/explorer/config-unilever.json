@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "network-unilever": {
+      "name": "Network of Unilever",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-unilever.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

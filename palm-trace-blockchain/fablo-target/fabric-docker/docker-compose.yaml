@@ -1,0 +1,537 @@
+version: '2.2'
+
+networks:
+  basic:
+
+services:
+
+  ca.orderer.palmtrace.co.id:
+    container_name: ca.orderer.palmtrace.co.id
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.orderer.palmtrace.co.id
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.orderer.palmtrace.co.id-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv-key.pem
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+    ports:
+      - 7020:7054
+    working_dir: /etc/hyperledger/fabric-ca-server
+    command: sh -c 'fabric-ca-server start -b ${PALMTRACEORDERER_CA_ADMIN_NAME}:${PALMTRACEORDERER_CA_ADMIN_PASSWORD} -d'
+    volumes:
+      - ../fabric-config/crypto-config/peerOrganizations/orderer.palmtrace.co.id/ca/:/etc/hyperledger/fabric-ca-server/crypto
+      - ../fabric-config/fabric-ca-server-config/orderer.palmtrace.co.id/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    networks:
+      - basic
+
+  cli.orderer.palmtrace.co.id:
+    container_name: cli.orderer.palmtrace.co.id
+    image: hyperledger/fabric-tools:${FABRIC_VERSION}
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      - CORE_PEER_ID=cli.orderer.palmtrace.co.id
+      - CORE_CHAINCODE_KEEPALIVE=10
+      #
+      - CORE_PEER_LOCALMSPID=PalmTraceOrdererMSP
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/cli/crypto/users/Admin@orderer.palmtrace.co.id/msp
+    working_dir: /var/hyperledger/cli/
+    command: /bin/bash
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-docker/scripts/cli:/var/hyperledger/cli/scripts/
+      - ../fabric-config/config:/var/hyperledger/cli/config/ # genesis.block and channel.tx's
+      - ../fabric-config/crypto-config/peerOrganizations/orderer.palmtrace.co.id:/var/hyperledger/cli/crypto/
+      - ../fabric-config/chaincode-packages:/var/hyperledger/cli/chaincode-packages/
+      - "$CHAINCODES_BASE_DIR/./chaincodes/rantai-pasok-chaincode/:/var/hyperledger/cli/rantai-pasok-chaincode/"
+    networks:
+      - basic
+
+  orderer0.palmtrace-orderer-group.orderer.palmtrace.co.id:
+    container_name: orderer0.palmtrace-orderer-group.orderer.palmtrace.co.id
+    image: hyperledger/fabric-orderer:${FABRIC_VERSION}
+    environment:
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7030
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_BOOTSTRAPFILE=/var/hyperledger/config/Palmtrace-orderer-groupGenesis.block
+      - ORDERER_GENERAL_LOCALMSPID=PalmTraceOrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - GODEBUG=netdns=go
+    working_dir: /var/hyperledger/orderer
+    command: orderer
+    ports:
+      - 7030:7030
+      - 8030:9440
+    volumes:
+      - ../fabric-config/config/:/var/hyperledger/config
+      - ../fabric-config/crypto-config/peerOrganizations/orderer.palmtrace.co.id/peers/orderer0.palmtrace-orderer-group.orderer.palmtrace.co.id/msp/:/var/hyperledger/orderer/msp
+      - ../fabric-config/crypto-config/peerOrganizations/orderer.palmtrace.co.id/peers/orderer0.palmtrace-orderer-group.orderer.palmtrace.co.id/tls/:/var/hyperledger/orderer/tls
+    networks:
+      - basic
+
+  ca.petani.palmtrace.co.id:
+    container_name: ca.petani.palmtrace.co.id
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.petani.palmtrace.co.id
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.petani.palmtrace.co.id-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv-key.pem
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+    ports:
+      - 7040:7054
+    working_dir: /etc/hyperledger/fabric-ca-server
+    command: sh -c 'fabric-ca-server start -b ${PETANI_CA_ADMIN_NAME}:${PETANI_CA_ADMIN_PASSWORD} -d'
+    volumes:
+      - ../fabric-config/crypto-config/peerOrganizations/petani.palmtrace.co.id/ca/:/etc/hyperledger/fabric-ca-server/crypto
+      - ../fabric-config/fabric-ca-server-config/petani.palmtrace.co.id/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    networks:
+      - basic
+
+  cli.petani.palmtrace.co.id:
+    container_name: cli.petani.palmtrace.co.id
+    image: hyperledger/fabric-tools:${FABRIC_VERSION}
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      - CORE_PEER_ID=cli.petani.palmtrace.co.id
+      - CORE_CHAINCODE_KEEPALIVE=10
+      #
+      - CORE_PEER_LOCALMSPID=PetaniMSP
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/cli/crypto/users/Admin@petani.palmtrace.co.id/msp
+      - CORE_PEER_ADDRESS=peer0.petani.palmtrace.co.id:7041
+    working_dir: /var/hyperledger/cli/
+    command: /bin/bash
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-docker/scripts/cli:/var/hyperledger/cli/scripts/
+      - ../fabric-config/config:/var/hyperledger/cli/config/ # genesis.block and channel.tx's
+      - ../fabric-config/crypto-config/peerOrganizations/petani.palmtrace.co.id:/var/hyperledger/cli/crypto/
+      - ../fabric-config/chaincode-packages:/var/hyperledger/cli/chaincode-packages/
+      - "$CHAINCODES_BASE_DIR/./chaincodes/rantai-pasok-chaincode/:/var/hyperledger/cli/rantai-pasok-chaincode/"
+    networks:
+      - basic
+
+  peer0.petani.palmtrace.co.id:
+    container_name: peer0.petani.palmtrace.co.id
+    image: hyperledger/fabric-peer:${FABRIC_VERSION}
+    environment:
+      - CORE_PEER_LOCALMSPID=PetaniMSP
+      - CORE_PEER_ID=peer0.petani.palmtrace.co.id
+      - CORE_PEER_ADDRESS=peer0.petani.palmtrace.co.id:7041
+      - CORE_PEER_LISTENADDRESS=peer0.petani.palmtrace.co.id:7041
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.petani.palmtrace.co.id:7041
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.petani.palmtrace.co.id:7041
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.petani.palmtrace.co.id:7041
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.petani.palmtrace.co.id:7050
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/peer/msp
+      - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:${FABRIC_CCENV_VERSION}
+      - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:${FABRIC_BASEOS_VERSION}
+      - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:${FABRIC_JAVAENV_VERSION}
+      #
+      - CORE_CHAINCODE_LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CORE_CHAINCODE_LOGGING_SHIM=${LOGGING_LEVEL}
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      # metrics
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.petani.palmtrace.co.id:9440
+      - CORE_METRICS_PROVIDER=prometheus
+      #
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_basic
+      - CORE_VM_DOCKER_ATTACHSTDOUT=true
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - GODEBUG=netdns=go
+      # CouchDB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.petani.palmtrace.co.id:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer0Password
+      # enabled gateway
+      - CORE_PEER_GATEWAY_ENABLED=true
+    working_dir: /etc/hyperledger/fabric/peer/
+    command: peer node start
+    ports:
+      - 8041:9440
+      - 7041:7041
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-config/crypto-config/peerOrganizations/petani.palmtrace.co.id/peers/peer0.petani.palmtrace.co.id/msp:/etc/hyperledger/fabric/peer/msp
+      - ../fabric-config/crypto-config/peerOrganizations/petani.palmtrace.co.id/peers/peer0.petani.palmtrace.co.id/tls:/etc/hyperledger/fabric/peer/tls
+      - ../fabric-config/crypto-config/peerOrganizations/petani.palmtrace.co.id/users:/etc/hyperledger/fabric/peer/msp/users
+      - ../fabric-config/config:/etc/hyperledger/fabric/config
+    networks:
+      - basic
+
+  couchdb.peer0.petani.palmtrace.co.id:
+    container_name: couchdb.peer0.petani.palmtrace.co.id
+    image: couchdb:${COUCHDB_VERSION}
+    environment:
+      - COUCHDB_USER=peer0
+      - COUCHDB_PASSWORD=peer0Password
+    ports:
+      - 5100:5984
+    networks:
+      - basic
+
+  ca.koperasi.palmtrace.co.id:
+    container_name: ca.koperasi.palmtrace.co.id
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.koperasi.palmtrace.co.id
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.koperasi.palmtrace.co.id-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv-key.pem
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+    ports:
+      - 7060:7054
+    working_dir: /etc/hyperledger/fabric-ca-server
+    command: sh -c 'fabric-ca-server start -b ${KOPERASI_CA_ADMIN_NAME}:${KOPERASI_CA_ADMIN_PASSWORD} -d'
+    volumes:
+      - ../fabric-config/crypto-config/peerOrganizations/koperasi.palmtrace.co.id/ca/:/etc/hyperledger/fabric-ca-server/crypto
+      - ../fabric-config/fabric-ca-server-config/koperasi.palmtrace.co.id/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    networks:
+      - basic
+
+  cli.koperasi.palmtrace.co.id:
+    container_name: cli.koperasi.palmtrace.co.id
+    image: hyperledger/fabric-tools:${FABRIC_VERSION}
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      - CORE_PEER_ID=cli.koperasi.palmtrace.co.id
+      - CORE_CHAINCODE_KEEPALIVE=10
+      #
+      - CORE_PEER_LOCALMSPID=KoperasiMSP
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/cli/crypto/users/Admin@koperasi.palmtrace.co.id/msp
+      - CORE_PEER_ADDRESS=peer0.koperasi.palmtrace.co.id:7061
+    working_dir: /var/hyperledger/cli/
+    command: /bin/bash
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-docker/scripts/cli:/var/hyperledger/cli/scripts/
+      - ../fabric-config/config:/var/hyperledger/cli/config/ # genesis.block and channel.tx's
+      - ../fabric-config/crypto-config/peerOrganizations/koperasi.palmtrace.co.id:/var/hyperledger/cli/crypto/
+      - ../fabric-config/chaincode-packages:/var/hyperledger/cli/chaincode-packages/
+      - "$CHAINCODES_BASE_DIR/./chaincodes/rantai-pasok-chaincode/:/var/hyperledger/cli/rantai-pasok-chaincode/"
+    networks:
+      - basic
+
+  peer0.koperasi.palmtrace.co.id:
+    container_name: peer0.koperasi.palmtrace.co.id
+    image: hyperledger/fabric-peer:${FABRIC_VERSION}
+    environment:
+      - CORE_PEER_LOCALMSPID=KoperasiMSP
+      - CORE_PEER_ID=peer0.koperasi.palmtrace.co.id
+      - CORE_PEER_ADDRESS=peer0.koperasi.palmtrace.co.id:7061
+      - CORE_PEER_LISTENADDRESS=peer0.koperasi.palmtrace.co.id:7061
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.koperasi.palmtrace.co.id:7061
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.koperasi.palmtrace.co.id:7061
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.koperasi.palmtrace.co.id:7061
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.koperasi.palmtrace.co.id:7050
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/peer/msp
+      - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:${FABRIC_CCENV_VERSION}
+      - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:${FABRIC_BASEOS_VERSION}
+      - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:${FABRIC_JAVAENV_VERSION}
+      #
+      - CORE_CHAINCODE_LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CORE_CHAINCODE_LOGGING_SHIM=${LOGGING_LEVEL}
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      # metrics
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.koperasi.palmtrace.co.id:9440
+      - CORE_METRICS_PROVIDER=prometheus
+      #
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_basic
+      - CORE_VM_DOCKER_ATTACHSTDOUT=true
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - GODEBUG=netdns=go
+      # CouchDB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.koperasi.palmtrace.co.id:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer0Password
+      # enabled gateway
+      - CORE_PEER_GATEWAY_ENABLED=true
+    working_dir: /etc/hyperledger/fabric/peer/
+    command: peer node start
+    ports:
+      - 8061:9440
+      - 7061:7061
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-config/crypto-config/peerOrganizations/koperasi.palmtrace.co.id/peers/peer0.koperasi.palmtrace.co.id/msp:/etc/hyperledger/fabric/peer/msp
+      - ../fabric-config/crypto-config/peerOrganizations/koperasi.palmtrace.co.id/peers/peer0.koperasi.palmtrace.co.id/tls:/etc/hyperledger/fabric/peer/tls
+      - ../fabric-config/crypto-config/peerOrganizations/koperasi.palmtrace.co.id/users:/etc/hyperledger/fabric/peer/msp/users
+      - ../fabric-config/config:/etc/hyperledger/fabric/config
+    networks:
+      - basic
+
+  couchdb.peer0.koperasi.palmtrace.co.id:
+    container_name: couchdb.peer0.koperasi.palmtrace.co.id
+    image: couchdb:${COUCHDB_VERSION}
+    environment:
+      - COUCHDB_USER=peer0
+      - COUCHDB_PASSWORD=peer0Password
+    ports:
+      - 5120:5984
+    networks:
+      - basic
+
+  ca.pabrikkelapasawit.palmtrace.co.id:
+    container_name: ca.pabrikkelapasawit.palmtrace.co.id
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.pabrikkelapasawit.palmtrace.co.id
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.pabrikkelapasawit.palmtrace.co.id-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv-key.pem
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+    ports:
+      - 7080:7054
+    working_dir: /etc/hyperledger/fabric-ca-server
+    command: sh -c 'fabric-ca-server start -b ${PABRIKKELAPASAWIT_CA_ADMIN_NAME}:${PABRIKKELAPASAWIT_CA_ADMIN_PASSWORD} -d'
+    volumes:
+      - ../fabric-config/crypto-config/peerOrganizations/pabrikkelapasawit.palmtrace.co.id/ca/:/etc/hyperledger/fabric-ca-server/crypto
+      - ../fabric-config/fabric-ca-server-config/pabrikkelapasawit.palmtrace.co.id/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    networks:
+      - basic
+
+  cli.pabrikkelapasawit.palmtrace.co.id:
+    container_name: cli.pabrikkelapasawit.palmtrace.co.id
+    image: hyperledger/fabric-tools:${FABRIC_VERSION}
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      - CORE_PEER_ID=cli.pabrikkelapasawit.palmtrace.co.id
+      - CORE_CHAINCODE_KEEPALIVE=10
+      #
+      - CORE_PEER_LOCALMSPID=PabrikKelapaSawitMSP
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/cli/crypto/users/Admin@pabrikkelapasawit.palmtrace.co.id/msp
+      - CORE_PEER_ADDRESS=peer0.pabrikkelapasawit.palmtrace.co.id:7081
+    working_dir: /var/hyperledger/cli/
+    command: /bin/bash
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-docker/scripts/cli:/var/hyperledger/cli/scripts/
+      - ../fabric-config/config:/var/hyperledger/cli/config/ # genesis.block and channel.tx's
+      - ../fabric-config/crypto-config/peerOrganizations/pabrikkelapasawit.palmtrace.co.id:/var/hyperledger/cli/crypto/
+      - ../fabric-config/chaincode-packages:/var/hyperledger/cli/chaincode-packages/
+      - "$CHAINCODES_BASE_DIR/./chaincodes/rantai-pasok-chaincode/:/var/hyperledger/cli/rantai-pasok-chaincode/"
+    networks:
+      - basic
+
+  peer0.pabrikkelapasawit.palmtrace.co.id:
+    container_name: peer0.pabrikkelapasawit.palmtrace.co.id
+    image: hyperledger/fabric-peer:${FABRIC_VERSION}
+    environment:
+      - CORE_PEER_LOCALMSPID=PabrikKelapaSawitMSP
+      - CORE_PEER_ID=peer0.pabrikkelapasawit.palmtrace.co.id
+      - CORE_PEER_ADDRESS=peer0.pabrikkelapasawit.palmtrace.co.id:7081
+      - CORE_PEER_LISTENADDRESS=peer0.pabrikkelapasawit.palmtrace.co.id:7081
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.pabrikkelapasawit.palmtrace.co.id:7081
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.pabrikkelapasawit.palmtrace.co.id:7081
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.pabrikkelapasawit.palmtrace.co.id:7081
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.pabrikkelapasawit.palmtrace.co.id:7050
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/peer/msp
+      - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:${FABRIC_CCENV_VERSION}
+      - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:${FABRIC_BASEOS_VERSION}
+      - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:${FABRIC_JAVAENV_VERSION}
+      #
+      - CORE_CHAINCODE_LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CORE_CHAINCODE_LOGGING_SHIM=${LOGGING_LEVEL}
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      # metrics
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.pabrikkelapasawit.palmtrace.co.id:9440
+      - CORE_METRICS_PROVIDER=prometheus
+      #
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_basic
+      - CORE_VM_DOCKER_ATTACHSTDOUT=true
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - GODEBUG=netdns=go
+      # CouchDB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.pabrikkelapasawit.palmtrace.co.id:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer0Password
+      # enabled gateway
+      - CORE_PEER_GATEWAY_ENABLED=true
+    working_dir: /etc/hyperledger/fabric/peer/
+    command: peer node start
+    ports:
+      - 8081:9440
+      - 7081:7081
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-config/crypto-config/peerOrganizations/pabrikkelapasawit.palmtrace.co.id/peers/peer0.pabrikkelapasawit.palmtrace.co.id/msp:/etc/hyperledger/fabric/peer/msp
+      - ../fabric-config/crypto-config/peerOrganizations/pabrikkelapasawit.palmtrace.co.id/peers/peer0.pabrikkelapasawit.palmtrace.co.id/tls:/etc/hyperledger/fabric/peer/tls
+      - ../fabric-config/crypto-config/peerOrganizations/pabrikkelapasawit.palmtrace.co.id/users:/etc/hyperledger/fabric/peer/msp/users
+      - ../fabric-config/config:/etc/hyperledger/fabric/config
+    networks:
+      - basic
+
+  couchdb.peer0.pabrikkelapasawit.palmtrace.co.id:
+    container_name: couchdb.peer0.pabrikkelapasawit.palmtrace.co.id
+    image: couchdb:${COUCHDB_VERSION}
+    environment:
+      - COUCHDB_USER=peer0
+      - COUCHDB_PASSWORD=peer0Password
+    ports:
+      - 5140:5984
+    networks:
+      - basic
+
+  ca.unilever.palmtrace.co.id:
+    container_name: ca.unilever.palmtrace.co.id
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.unilever.palmtrace.co.id
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/crypto/ca.unilever.palmtrace.co.id-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/crypto/priv-key.pem
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+    ports:
+      - 7100:7054
+    working_dir: /etc/hyperledger/fabric-ca-server
+    command: sh -c 'fabric-ca-server start -b ${UNILEVER_CA_ADMIN_NAME}:${UNILEVER_CA_ADMIN_PASSWORD} -d'
+    volumes:
+      - ../fabric-config/crypto-config/peerOrganizations/unilever.palmtrace.co.id/ca/:/etc/hyperledger/fabric-ca-server/crypto
+      - ../fabric-config/fabric-ca-server-config/unilever.palmtrace.co.id/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+    networks:
+      - basic
+
+  cli.unilever.palmtrace.co.id:
+    container_name: cli.unilever.palmtrace.co.id
+    image: hyperledger/fabric-tools:${FABRIC_VERSION}
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      - CORE_PEER_ID=cli.unilever.palmtrace.co.id
+      - CORE_CHAINCODE_KEEPALIVE=10
+      #
+      - CORE_PEER_LOCALMSPID=UnileverMSP
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/cli/crypto/users/Admin@unilever.palmtrace.co.id/msp
+      - CORE_PEER_ADDRESS=peer0.unilever.palmtrace.co.id:7101
+    working_dir: /var/hyperledger/cli/
+    command: /bin/bash
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-docker/scripts/cli:/var/hyperledger/cli/scripts/
+      - ../fabric-config/config:/var/hyperledger/cli/config/ # genesis.block and channel.tx's
+      - ../fabric-config/crypto-config/peerOrganizations/unilever.palmtrace.co.id:/var/hyperledger/cli/crypto/
+      - ../fabric-config/chaincode-packages:/var/hyperledger/cli/chaincode-packages/
+      - "$CHAINCODES_BASE_DIR/./chaincodes/rantai-pasok-chaincode/:/var/hyperledger/cli/rantai-pasok-chaincode/"
+    networks:
+      - basic
+
+  peer0.unilever.palmtrace.co.id:
+    container_name: peer0.unilever.palmtrace.co.id
+    image: hyperledger/fabric-peer:${FABRIC_VERSION}
+    environment:
+      - CORE_PEER_LOCALMSPID=UnileverMSP
+      - CORE_PEER_ID=peer0.unilever.palmtrace.co.id
+      - CORE_PEER_ADDRESS=peer0.unilever.palmtrace.co.id:7101
+      - CORE_PEER_LISTENADDRESS=peer0.unilever.palmtrace.co.id:7101
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.unilever.palmtrace.co.id:7101
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.unilever.palmtrace.co.id:7101
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.unilever.palmtrace.co.id:7101
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.unilever.palmtrace.co.id:7050
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/peer/msp
+      - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:${FABRIC_CCENV_VERSION}
+      - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:${FABRIC_BASEOS_VERSION}
+      - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:${FABRIC_JAVAENV_VERSION}
+      #
+      - CORE_CHAINCODE_LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CORE_CHAINCODE_LOGGING_SHIM=${LOGGING_LEVEL}
+      - FABRIC_LOGGING_SPEC=${LOGGING_LEVEL}
+      # metrics
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.unilever.palmtrace.co.id:9440
+      - CORE_METRICS_PROVIDER=prometheus
+      #
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_basic
+      - CORE_VM_DOCKER_ATTACHSTDOUT=true
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - GODEBUG=netdns=go
+      # CouchDB
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.unilever.palmtrace.co.id:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer0Password
+      # enabled gateway
+      - CORE_PEER_GATEWAY_ENABLED=true
+    working_dir: /etc/hyperledger/fabric/peer/
+    command: peer node start
+    ports:
+      - 8101:9440
+      - 7101:7101
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../fabric-config/crypto-config/peerOrganizations/unilever.palmtrace.co.id/peers/peer0.unilever.palmtrace.co.id/msp:/etc/hyperledger/fabric/peer/msp
+      - ../fabric-config/crypto-config/peerOrganizations/unilever.palmtrace.co.id/peers/peer0.unilever.palmtrace.co.id/tls:/etc/hyperledger/fabric/peer/tls
+      - ../fabric-config/crypto-config/peerOrganizations/unilever.palmtrace.co.id/users:/etc/hyperledger/fabric/peer/msp/users
+      - ../fabric-config/config:/etc/hyperledger/fabric/config
+    networks:
+      - basic
+
+  couchdb.peer0.unilever.palmtrace.co.id:
+    container_name: couchdb.peer0.unilever.palmtrace.co.id
+    image: couchdb:${COUCHDB_VERSION}
+    environment:
+      - COUCHDB_USER=peer0
+      - COUCHDB_PASSWORD=peer0Password
+    ports:
+      - 5160:5984
+    networks:
+      - basic
+
+  # db.explorer.palmtrace.co.id:
+  #   image: rahmaninsani/explorer-db:${HYPERLEDGER_EXPLORER_VERSION}
+  #   container_name: db.explorer.palmtrace.co.id
+  #   environment:
+  #     - DATABASE_DATABASE=fabricexplorer
+  #     - DATABASE_USERNAME=hppoc
+  #     - DATABASE_PASSWORD=password
+  #   healthcheck:
+  #     test: "pg_isready -h localhost -p 5432 -q -U postgres"
+  #     interval: 5s
+  #     timeout: 10s
+  #     retries: 7
+  #   volumes:
+  #     - /var/lib/postgresql/data
+  #   networks:
+  #     - basic
+
+  # explorer.palmtrace.co.id:
+  #   image: rahmaninsani/explorer:${HYPERLEDGER_EXPLORER_VERSION}
+  #   restart: on-failure:8
+  #   container_name: explorer.palmtrace.co.id
+  #   environment:
+  #     - DATABASE_HOST=db.explorer.palmtrace.co.id
+  #     - DATABASE_DATABASE=fabricexplorer
+  #     - DATABASE_USERNAME=hppoc
+  #     - DATABASE_PASSWD=password
+  #     - LOG_LEVEL_APP=debug
+  #     - LOG_LEVEL_DB=debug
+  #     - LOG_LEVEL_CONSOLE=info
+  #     - LOG_CONSOLE_STDOUT=true
+  #     - DISCOVERY_AS_LOCALHOST=false
+  #   volumes:
+  #     - ../fabric-config/explorer/config-global.json:/opt/explorer/app/platform/fabric/config.json
+  #     - ../fabric-config/explorer:/opt/explorer/app/platform/fabric/connection-profile
+  #     - ../fabric-config/crypto-config:/tmp/crypto
+  #   ports:
+  #     - "7010:8080"
+  #   depends_on:
+  #     db.explorer.palmtrace.co.id:
+  #       condition: service_healthy
+  #   networks:
+  #     - basic
